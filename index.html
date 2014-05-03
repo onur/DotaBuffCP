@@ -405,6 +405,10 @@ $(document).ready (function () {
          font-size: 1.2em;
        }
 
+       div.addthis_toolbox {
+         margin-top: 10px;
+       }
+
 
     </style>
   </head>
@@ -428,26 +432,23 @@ $(document).ready (function () {
         </div>
         <div class="navbar-collapse collapse">
           <ul class="nav navbar-nav">
-            <li class="active"><a href="#">Link</a></li>
-            <li><a href="#">Link</a></li>
-            <li><a href="#">Link</a></li>
-            <li class="dropdown">
-              <a href="#" class="dropdown-toggle" data-toggle="dropdown">Dropdown <b class="caret"></b></a>
-              <ul class="dropdown-menu">
-                <li><a href="#">Action</a></li>
-                <li><a href="#">Another action</a></li>
-                <li><a href="#">Something else here</a></li>
-                <li class="divider"></li>
-                <li class="dropdown-header">Nav header</li>
-                <li><a href="#">Separated link</a></li>
-                <li><a href="#">One more separated link</a></li>
-              </ul>
-            </li>
+            <li><a href="#about">About</a></li>
           </ul>
           <ul class="nav navbar-nav navbar-right">
-            <li class="active"><a href="./">Default</a></li>
-            <li><a href="../navbar-static-top/">Static top</a></li>
-            <li><a href="../navbar-fixed-top/">Fixed top</a></li>
+            <li><a href="#" id="version"></a></li>
+            <li>
+              <!-- AddThis Button BEGIN -->
+              <div class="addthis_toolbox addthis_default_style addthis_32x32_style">
+              <a class="addthis_button_twitter"></a>
+              <a class="addthis_button_facebook"></a>
+              <a class="addthis_button_reddit"></a>
+              <a class="addthis_button_google_plusone_share"></a>
+              <a class="addthis_button_compact"></a><a class="addthis_counter addthis_bubble_style"></a>
+              </div>
+              <script type="text/javascript">var addthis_config = {"data_track_addressbar":true};</script>
+              <script type="text/javascript" src="//s7.addthis.com/js/300/addthis_widget.js#pubid=ra-5364e5fa49d525cb"></script>
+              <!-- AddThis Button END -->
+            </li>
           </ul>
         </div><!--/.nav-collapse -->
       </div><!--/.container-fluid -->
