@@ -190,7 +190,20 @@ var MainView = Backbone.View.extend ({
     this.switchLink ();
   },
 
+  isEmpty: function () {
+    for (var i in DotaBuffCP.lineup)
+      if (DotaBuffCP.lineup[i] != -1)
+        return false;
+    return true;
+  },
+
   calculateAndShow: function () {
+
+    if (this.isEmpty ()) {
+      $('#best-picks').html ('');
+      $('#worse-picks').html ('');
+      return;
+    }
 
     var advantages = DotaBuffCP.calculate ();
 
@@ -313,9 +326,38 @@ $(document).ready (function () {
          margin-bottom: 20px;
        }
 
+       div.main-wrapper {
+         position: relative;
+         height: 100%;
+       }
+
+       #main-container {
+         position: absolute;
+         bottom: 0;
+         top: 70px;
+         width: 100%;
+       }
+
+       div.main-col {
+         position: absolute;
+         bottom: 0;
+         top: 0;
+       }
+
+       div.second-col {
+         position: absolute;
+         bottom: 0;
+         top: 0;
+         right: 30px;
+       }
+
        #hero-list {
-         max-height: 500px;
+         position: absolute;
+         top: 50px;
+         bottom: 0;
          overflow-y: auto;
+         left: 15px;
+         right: 20px;
        }
 
        #hero-list,
@@ -352,10 +394,14 @@ $(document).ready (function () {
        }
 
        #counters {
-         padding-top: 20px;
-         max-height: 500px;
+         position: absolute;
+         top: 170px;
+         bottom: 0;
          overflow-y: auto;
          overflow-x: hidden;
+         left: 30px;
+         right: 20px;
+         padding-right: 20px;
        }
 
        #counters div.row {
@@ -363,7 +409,7 @@ $(document).ready (function () {
        }
 
        #counters div.row img {
-         max-width: 100px;
+         max-width: 90px;
        }
 
        div.pick-title {
@@ -372,12 +418,12 @@ $(document).ready (function () {
          font-size: 1.2em;
        }
 
+
     </style>
   </head>
   <body>
 
-
-  <div class="container">
+  <div class="container main-wrapper">
 
 
     <!-- lets put a navbar -->
@@ -427,9 +473,9 @@ $(document).ready (function () {
     </div>
     -->
 
-  </div><!-- nav container -->
+  <div id="main-container"></div>
 
-  <div id="main-container" class="container"></div>
+  </div><!-- main wrapper -->
 
   <script type="text/template" id="main-view-template">
 
@@ -444,13 +490,9 @@ $(document).ready (function () {
           <button id="hero-search-reset" type="reset" class="btn btn-default"><span class="glyphicon glyphicon-remove"></span></button>
         </form>
 
-        <div>
-          <ul id="hero-list">
-          </ul>
-        </div>
-      
+        <ul id="hero-list"></ul>
       </div>
-      <div class="col-md-8">
+      <div class="col-md-8 second-col">
         <div class="row lineup-title">
           <h3>Choose your destiny</h3>
         </div>
