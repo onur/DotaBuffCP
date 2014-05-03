@@ -3,7 +3,6 @@
   <head>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>Counter Picker based on DotaBuff</title>
     <link href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.1.1/css/bootstrap.min.css" rel="stylesheet">
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/1.11.0/jquery.min.js"></script>
@@ -335,6 +334,7 @@ $(document).ready (function () {
        }
 
        div.main-wrapper {
+         width: 967px !important;
          position: relative;
          height: 100%;
        }
@@ -343,7 +343,7 @@ $(document).ready (function () {
          position: absolute;
          bottom: 0;
          top: 70px;
-         width: 100%;
+         width: 967px !important;
        }
 
        div.main-col {
@@ -482,7 +482,7 @@ $(document).ready (function () {
   <script type="text/template" id="main-view-template">
 
     <div class="row">
-      <div class="col-md-4 main-col">
+      <div class="col-md-4 col-xs-4 main-col">
 
         <form class="form-inline hero-search-form" role="form">
           <div class="form-group">
@@ -494,27 +494,27 @@ $(document).ready (function () {
 
         <ul id="hero-list"></ul>
       </div>
-      <div class="col-md-8 second-col">
+      <div class="col-md-8 col-xs-8 second-col">
         <div class="row lineup-title">
           <h3>Choose your destiny</h3>
         </div>
         <div class="row lineup">
-          <div class="col-md-1"></div>
-          <div class="col-md-2" id="hero-0"></div>
-          <div class="col-md-2" id="hero-1"></div>
-          <div class="col-md-2" id="hero-2"></div>
-          <div class="col-md-2" id="hero-3"></div>
-          <div class="col-md-2" id="hero-4"></div>
-          <div class="col-md-1"></div>
+          <div class="col-md-1 col-xs-1"></div>
+          <div class="col-md-2 col-xs-2" id="hero-0"></div>
+          <div class="col-md-2 col-xs-2" id="hero-1"></div>
+          <div class="col-md-2 col-xs-2" id="hero-2"></div>
+          <div class="col-md-2 col-xs-2" id="hero-3"></div>
+          <div class="col-md-2 col-xs-2" id="hero-4"></div>
+          <div class="col-md-1 col-xs-1"></div>
         </div>
         <div class="row pick-title">
-          <div class="col-md-6">Best picks</div>
-          <div class="col-md-6">Worse picks</div>
+          <div class="col-md-6 col-xs-6">Best picks</div>
+          <div class="col-md-6 col-xs-6">Worse picks</div>
         </div>
         <div id="counters" class="row">
           <div class="row">
-            <div class="col-md-6" id="best-picks"></div>
-            <div class="col-md-6" id="worse-picks"></div>
+            <div class="col-md-6 col-xs-6" id="best-picks"></div>
+            <div class="col-md-6 col-xs-6" id="worse-picks"></div>
           </div>
         </div>
       </div>
@@ -525,9 +525,9 @@ $(document).ready (function () {
   <script type="text/template" id="counter-template">
 
         <div class="row">
-          <div class="col-md-4"><img src="<%= hero_bg %>"></div>
-          <div class="col-md-5"><%= hero_name %></div>
-          <div class="col-md-3">%<%= advantage %></div>
+          <div class="col-md-4 col-xs-4"><img src="<%= hero_bg %>"></div>
+          <div class="col-md-5 col-xs-5"><%= hero_name %></div>
+          <div class="col-md-3 col-xs-3">%<%= advantage %></div>
         </div>
 
   </script>
