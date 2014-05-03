@@ -450,10 +450,6 @@ $(document).ready (function () {
          padding-right: 20px;
        }
 
-       #counters div.row {
-         margin-bottom: 10px;
-       }
-
        #counters div.row img {
          max-width: 90px;
        }
@@ -560,8 +556,16 @@ $(document).ready (function () {
         </div>
         <div id="counters" class="row">
           <div class="row">
-            <div class="col-md-6 col-xs-6" id="best-picks"></div>
-            <div class="col-md-6 col-xs-6" id="worse-picks"></div>
+            <div class="col-md-6 col-xs-6">
+              <table class="table table-striped">
+                <tbody id="best-picks"></tbody>
+              </table>
+            </div>
+            <div class="col-md-6 col-xs-6">
+              <table class="table">
+                <tbody id="worse-picks"></tbody>
+              </table>
+            </div>
           </div>
         </div>
       </div>
@@ -571,11 +575,16 @@ $(document).ready (function () {
 
   <script type="text/template" id="counter-template">
 
-        <div class="row">
-          <div class="col-md-4 col-xs-4"><img src="<%= hero_bg %>"></div>
-          <div class="col-md-5 col-xs-5"><%= hero_name %></div>
-          <div class="col-md-3 col-xs-3">%<%= advantage %></div>
-        </div>
+        <tr class="<%
+          if (advantage > 10) { %>success<% }
+          else if (advantage > 8) { %>info<% }
+          else if (advantage > 5) { %>warning<% }
+          else if (advantage < 0) { %>danger<% }
+        %>">
+          <td><img src="<%= hero_bg %>"></td>
+          <td><%= hero_name %></td>
+          <td><%= advantage %>%</td>
+        </tr>
 
   </script>
 
