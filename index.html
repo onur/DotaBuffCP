@@ -119,6 +119,7 @@ var MainView = Backbone.View.extend ({
   initialize: function () {
     this.$el.html (_.template ($('#main-view-template').html ()));
     DotaBuffCP.listHeroes ();
+    $('#hero-search').focus ();
   },
 
   events: {
