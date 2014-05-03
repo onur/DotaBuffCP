@@ -1,0 +1,492 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Counter Picker based on DotaBuff</title>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.1.1/css/bootstrap.min.css" rel="stylesheet">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/1.11.0/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.1.1/js/bootstrap.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/underscore.js/1.6.0/underscore-min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/backbone.js/1.1.2/backbone-min.js"></script>
+    <!--[if lt IE 9]>
+      <script src="https://cdnjs.cloudflare.com/ajax/libs/html5shiv/3.7/html5shiv.min.js"></script>
+      <script src="https://cdnjs.cloudflare.com/ajax/libs/respond.js/1.4.2/respond.min.js"></script>
+    <![endif]-->
+    <script src="/dotabuffcp/data.js"></script>
+    <script type="text/javascript">
+
+// Fun part starts from here
+
+
+var DotaBuffCP = {
+
+  initialized: false,
+  lineup: [ -1, -1, -1, -1, -1 ],
+
+  heroId: function (name) {
+
+    for (var i in heroes)
+      if (heroes[i].toLowerCase ().indexOf (name.toLowerCase ()) >= 0)
+        return i;
+
+    return -1;
+
+  },
+
+  listHeroes: function (name) {
+    $('#hero-list').html ('');
+    _.each (heroes, function (hero, key) {
+
+      if (!_.isUndefined (name) && 
+          hero.toLowerCase ().indexOf (name.toLowerCase ()) < 0) {
+        return;
+      }
+
+      $('#hero-list').append (
+        $('<li>').attr ('data-hero-id', key).html (
+          $('<img>').attr ('src', heroes_bg[key])
+        ).append (hero)
+      );
+    });
+  },
+
+  calculate: function () {
+
+    var advantages = Array.apply (null, new Array (heroes.length))
+                       .map (Number.prototype.valueOf, 0.0);
+
+    for (var h in this.lineup) {
+
+      var hid = this.lineup[h];
+
+      if (hid == -1)
+        continue;
+
+      for (var i = 0; i < heroes.length; ++i) {
+        if (_.isUndefined (win_rates[hid][i]) || _.isNull (win_rates[hid][i]))
+          continue;
+        advantages[i] += parseFloat (win_rates[hid][i][0]);
+      }
+
+    }
+
+    return advantages;
+
+  },
+
+  generateLink: function () {
+
+    var link = '#';
+
+    for (var i in this.lineup) {
+      if (this.lineup[i] == -1)
+        link += '/';
+      else
+        link += heroes[this.lineup[i]] + '/';
+    }
+
+    link = link.replace (/ /, '_');
+    link = link.replace (/\/+$/, '');
+
+    return link;
+  }
+
+};
+
+
+
+var MainView = Backbone.View.extend ({
+
+  el: '#main-container',
+
+  initialize: function () {
+    this.$el.html (_.template ($('#main-view-template').html ()));
+    DotaBuffCP.listHeroes ();
+  },
+
+  events: {
+    'keyup #hero-search': 'heroSearch',
+    'click #hero-search-reset': 'heroSearchReset',
+    'click #hero-list li': 'addHero',
+    'click div.lineup div.col-md-2 img': 'removeHero',
+    'submit form': function () { return false; }
+  },
+
+  heroSearch: function (ev) {
+    // reset if Esc pressed
+    if (ev.keyCode == 27) {
+      $(ev.currentTarget).val ('');
+      this.heroSearchReset ();
+    }
+    // add first hero if enter pressed
+    else if (ev.keyCode == 13) {
+      this.addFirstHero ();
+    }
+    
+    else {
+      DotaBuffCP.listHeroes ($(ev.currentTarget).val ());
+    }
+
+    return false;
+  },
+
+  heroSearchReset: function () {
+    DotaBuffCP.listHeroes ();
+  },
+
+  switchLink: function () {
+    var link = DotaBuffCP.generateLink ();
+    location.href = link;
+  },
+
+  addFirstHero: function () {
+    $('#hero-list li:first').trigger ('click');
+  },
+
+  addHero: function (ev) {
+    var hid = $(ev.currentTarget).attr ('data-hero-id');
+    var pick_i = -1;
+
+    this.heroSearchReset ();
+    $('#hero-search').val ('');
+    $('#hero-search').focus ();
+
+    for (var i in DotaBuffCP.lineup)
+      if (DotaBuffCP.lineup[i] == hid)
+        return;
+
+    for (var i in DotaBuffCP.lineup) {
+      if (DotaBuffCP.lineup[i] == -1) {
+        pick_i = i;
+        break;
+      }
+    }
+
+    if (pick_i == -1)
+      return;
+
+    DotaBuffCP.lineup[pick_i] = hid;
+
+    $('#hero-' + pick_i).html ($('<img>').attr ('src', heroes_bg[hid])
+                                         .attr ('data-idx', pick_i));
+
+    this.calculateAndShow ();
+    this.switchLink ();
+  },
+
+  addHeroToIndex: function (hid, pick_i) {
+    $('#hero-' + pick_i).html ($('<img>').attr ('src', heroes_bg[hid])
+                                         .attr ('data-idx', pick_i));
+  },
+
+  removeHero: function (ev) {
+    var i = $(ev.currentTarget).attr ('data-idx');
+    DotaBuffCP.lineup[i] = -1;
+    $('#hero-' + i).html ('');
+
+    this.calculateAndShow ();
+    this.switchLink ();
+  },
+
+  calculateAndShow: function () {
+
+    var advantages = DotaBuffCP.calculate ();
+
+    // lets add indexes (hero ids) first
+    for (var i in advantages)
+      advantages[i] = [advantages[i], i];
+
+    advantages.sort (function (l, r) {
+      return l[0] < r[0] ? -1 : 1;
+    });
+
+    var template = $('#counter-template').html ();
+
+    $('#best-picks').html ('');
+
+    _.each (advantages.slice (0, advantages.length / 2), function (advantage, i) {
+
+      for (var l in DotaBuffCP.lineup)
+        if (advantage[1] == DotaBuffCP.lineup[l])
+          return;
+
+      $('#best-picks').append (_.template (template, {
+                                                     hero_bg: heroes_bg[advantage[1]],
+                                                     hero_name: heroes[advantage[1]],
+                                                     advantage: advantage[0].toFixed (2) * -1
+                                                   }));
+    });
+
+    advantages.sort (function (l, r) {
+      return l[0] > r[0] ? -1 : 1;
+    });
+
+    $('#worse-picks').html ('');
+
+    _.each (advantages.slice (0, advantages.length / 2), function (advantage, i) {
+
+      for (var l in DotaBuffCP.lineup)
+        if (advantage[1] == DotaBuffCP.lineup[l])
+          return;
+
+      $('#worse-picks').append (_.template (template, {
+                                                     hero_bg: heroes_bg[advantage[1]],
+                                                     hero_name: heroes[advantage[1]],
+                                                     advantage: advantage[0].toFixed (2) * -1
+                                                   }));
+    });
+  }
+
+});
+
+
+
+var AppRouter = Backbone.Router.extend ({
+
+  initialize: function () {
+    this.route (/^(.*?)$/, 'sozdeHerolar');
+  },
+
+  sozdeHerolar: function (heroSelection) {
+    if (DotaBuffCP.initialized)
+      return;
+
+    var mainView = new MainView ();
+
+    if (_.isNull (heroSelection))
+      return;
+
+    heroSelection = heroSelection.replace (/_/, ' ');
+    var selectedHeroes = heroSelection.split ('/');
+    console.log (selectedHeroes);
+    
+    for (var i in selectedHeroes) {
+
+      if (i > 4)
+        break;
+
+      if (_.isEmpty (selectedHeroes[i]))
+        continue;
+
+      var hid = DotaBuffCP.heroId (selectedHeroes[i]);
+
+      if (hid == -1)
+        continue;
+
+      DotaBuffCP.lineup[i] = hid;
+      mainView.addHeroToIndex (hid, i);
+    }
+
+    mainView.calculateAndShow ();
+  },
+
+});
+
+
+$(document).ready (function () {
+  var appRouter = new AppRouter ();
+
+  Backbone.history.start ({ pushState: false, root: '/dotabuffcp/' });
+
+  DotaBuffCP.initialized = true;
+});
+
+    </script>
+    <style type="text/css">
+
+       html, body {
+         height: 100%;
+       }
+
+       body {
+         padding: 20px 0 20px 0;
+       }
+
+       img {
+         border: 1px solid #aaa;
+         box-shadow: 2px 2px 8px 0px rgba(50, 50, 50, 0.38);
+       }
+
+       .navbar {
+         margin-bottom: 20px;
+       }
+
+       #hero-list {
+         max-height: 500px;
+         overflow-y: auto;
+       }
+
+       #hero-list,
+       #hero-list li {
+         list-style-type: none;
+         margin: 0;
+         padding: 0;
+       }
+
+       #hero-list li {
+         margin-bottom: 10px;
+         cursor: pointer;
+       }
+
+       #hero-list li img {
+         max-width: 100px;
+         margin-right: 10px;
+       }
+
+       form.hero-search-form {
+         margin-bottom: 10px;
+       }
+
+       div.lineup img {
+         max-width: 100px;
+       }
+
+       div.lineup div.col-md-2 {
+         cursor: pointer;
+       }
+
+       div.lineup-title {
+         text-align: center;
+       }
+
+       #counters {
+         padding-top: 20px;
+         max-height: 500px;
+         overflow-y: auto;
+         overflow-x: hidden;
+       }
+
+       #counters div.row {
+         margin-bottom: 10px;
+       }
+
+       #counters div.row img {
+         max-width: 100px;
+       }
+
+       div.pick-title {
+         text-align: center;
+         padding-top: 20px;
+         font-size: 1.2em;
+       }
+
+    </style>
+  </head>
+  <body>
+
+
+  <div class="container">
+
+
+    <!-- lets put a navbar -->
+
+    <div class="navbar navbar-default" role="navigation">
+      <div class="container-fluid">
+        <div class="navbar-header">
+          <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+            <span class="sr-only">Toggle navigation</span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+          </button>
+          <a class="navbar-brand" href="#">DotaBuff CP</a>
+        </div>
+        <div class="navbar-collapse collapse">
+          <ul class="nav navbar-nav">
+            <li class="active"><a href="#">Link</a></li>
+            <li><a href="#">Link</a></li>
+            <li><a href="#">Link</a></li>
+            <li class="dropdown">
+              <a href="#" class="dropdown-toggle" data-toggle="dropdown">Dropdown <b class="caret"></b></a>
+              <ul class="dropdown-menu">
+                <li><a href="#">Action</a></li>
+                <li><a href="#">Another action</a></li>
+                <li><a href="#">Something else here</a></li>
+                <li class="divider"></li>
+                <li class="dropdown-header">Nav header</li>
+                <li><a href="#">Separated link</a></li>
+                <li><a href="#">One more separated link</a></li>
+              </ul>
+            </li>
+          </ul>
+          <ul class="nav navbar-nav navbar-right">
+            <li class="active"><a href="./">Default</a></li>
+            <li><a href="../navbar-static-top/">Static top</a></li>
+            <li><a href="../navbar-fixed-top/">Fixed top</a></li>
+          </ul>
+        </div><!--/.nav-collapse -->
+      </div><!--/.container-fluid -->
+    </div>
+
+    <!--
+    <div class="jumbotron">
+      <h1>Conter Picker</h1>
+      <p>based on DotaBuff</p>
+    </div>
+    -->
+
+  </div><!-- nav container -->
+
+  <div id="main-container" class="container"></div>
+
+  <script type="text/template" id="main-view-template">
+
+    <div class="row">
+      <div class="col-md-4 main-col">
+
+        <form class="form-inline hero-search-form" role="form">
+          <div class="form-group">
+            <label class="sr-only" for="hero-search">Hero Name</label>
+            <input type="text" class="form-control" id="hero-search" placeholder="Search" autocomplete="off">
+          </div>
+          <button id="hero-search-reset" type="reset" class="btn btn-default"><span class="glyphicon glyphicon-remove"></span></button>
+        </form>
+
+        <div>
+          <ul id="hero-list">
+          </ul>
+        </div>
+      
+      </div>
+      <div class="col-md-8">
+        <div class="row lineup-title">
+          <h3>Choose your destiny</h3>
+        </div>
+        <div class="row lineup">
+          <div class="col-md-1"></div>
+          <div class="col-md-2" id="hero-0"></div>
+          <div class="col-md-2" id="hero-1"></div>
+          <div class="col-md-2" id="hero-2"></div>
+          <div class="col-md-2" id="hero-3"></div>
+          <div class="col-md-2" id="hero-4"></div>
+          <div class="col-md-1"></div>
+        </div>
+        <div class="row pick-title">
+          <div class="col-md-6">Best picks</div>
+          <div class="col-md-6">Worse picks</div>
+        </div>
+        <div id="counters" class="row">
+          <div class="row">
+            <div class="col-md-6" id="best-picks"></div>
+            <div class="col-md-6" id="worse-picks"></div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </script>
+
+  <script type="text/template" id="counter-template">
+
+        <div class="row">
+          <div class="col-md-4"><img src="<%= hero_bg %>"></div>
+          <div class="col-md-5"><%= hero_name %></div>
+          <div class="col-md-3">%<%= advantage %></div>
+        </div>
+
+  </script>
+
+  </body>
+</html>
