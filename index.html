@@ -197,6 +197,23 @@ var MainView = Backbone.View.extend ({
     return true;
   },
 
+  showAdvantages: function (div, advantages) {
+    var template = $('#counter-template').html ();
+    $('#' + div).html ('');
+    _.each (advantages, function (advantage, i) {
+
+      for (var l in DotaBuffCP.lineup)
+        if (advantage[1] == DotaBuffCP.lineup[l])
+          return;
+
+      $('#' + div).append (_.template (template, {
+                                     hero_bg: heroes_bg[advantage[1]],
+                                     hero_name: heroes[advantage[1]],
+                                     advantage: advantage[0].toFixed (2) * -1
+                                                 }));
+    });
+  },
+
   calculateAndShow: function () {
 
     if (this.isEmpty ()) {
@@ -215,41 +232,11 @@ var MainView = Backbone.View.extend ({
       return l[0] < r[0] ? -1 : 1;
     });
 
-    var template = $('#counter-template').html ();
+    this.showAdvantages ('best-picks',
+                          advantages.slice (0, advantages.length / 2));
 
-    $('#best-picks').html ('');
-
-    _.each (advantages.slice (0, advantages.length / 2), function (advantage, i) {
-
-      for (var l in DotaBuffCP.lineup)
-        if (advantage[1] == DotaBuffCP.lineup[l])
-          return;
-
-      $('#best-picks').append (_.template (template, {
-                                                     hero_bg: heroes_bg[advantage[1]],
-                                                     hero_name: heroes[advantage[1]],
-                                                     advantage: advantage[0].toFixed (2) * -1
-                                                   }));
-    });
-
-    advantages.sort (function (l, r) {
-      return l[0] > r[0] ? -1 : 1;
-    });
-
-    $('#worse-picks').html ('');
-
-    _.each (advantages.slice (0, advantages.length / 2), function (advantage, i) {
-
-      for (var l in DotaBuffCP.lineup)
-        if (advantage[1] == DotaBuffCP.lineup[l])
-          return;
-
-      $('#worse-picks').append (_.template (template, {
-                                                     hero_bg: heroes_bg[advantage[1]],
-                                                     hero_name: heroes[advantage[1]],
-                                                     advantage: advantage[0].toFixed (2) * -1
-                                                   }));
-    });
+    this.showAdvantages ('worse-picks',
+                          advantages.reverse ().slice (0, advantages.length / 2));
   }
 
 });
