@@ -22,6 +22,8 @@
 
 var DotaBuffCP = {
 
+  VERSION: '0.1',
+
   initialized: false,
   lineup: [ -1, -1, -1, -1, -1 ],
 
@@ -91,6 +93,18 @@ var DotaBuffCP = {
     link = link.replace (/\/+$/, '');
 
     return link;
+  },
+
+  setVersion: function () {
+
+    var d = new Date (update_time);
+    var month = d.getMonth () + 1;
+    if (month < 10)
+      month = '0' + month;
+    var database_version = d.getFullYear () + month + '' + d.getDate ();
+    console.log (database_version);
+    $('#version').text (this.VERSION + '.' + database_version);
+
   }
 
 };
@@ -286,6 +300,8 @@ var AppRouter = Backbone.Router.extend ({
 
 
 $(document).ready (function () {
+  DotaBuffCP.setVersion ();
+
   var appRouter = new AppRouter ();
 
   Backbone.history.start ({ pushState: false, root: '/dotabuffcp/' });
