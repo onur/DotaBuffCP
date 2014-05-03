@@ -24,7 +24,11 @@ var DotaBuffCP = {
   VERSION: '0.1',
 
   initialized: false,
-  lineup: [ -1, -1, -1, -1, -1 ],
+
+  initialize: function () {
+    this.lineup = [ -1, -1, -1, -1, -1 ];
+    this.initialized = true;
+  },
 
   heroId: function (name) {
 
@@ -264,11 +268,14 @@ var AppRouter = Backbone.Router.extend ({
 
   initialize: function () {
     this.route (/^(.*?)$/, 'sozdeHerolar');
+    this.route (/^about$/, 'about');
   },
 
   sozdeHerolar: function (heroSelection) {
     if (DotaBuffCP.initialized)
       return;
+    else
+      DotaBuffCP.initialize ();
 
     var mainView = new MainView ();
 
@@ -298,6 +305,13 @@ var AppRouter = Backbone.Router.extend ({
 
     mainView.calculateAndShow ();
   },
+
+  about: function () {
+    $('#main-container').html (_.template ($('#about-page').html (),
+                                           { version: DotaBuffCP.VERSION,
+                                             last_update: update_time }));
+    DotaBuffCP.initialized = false;
+  }
 
 });
 
@@ -345,6 +359,7 @@ $(document).ready (function () {
          bottom: 0;
          top: 70px;
          width: 967px !important;
+         padding-right: 30px;
        }
 
        div.main-col {
@@ -458,18 +473,6 @@ $(document).ready (function () {
           </ul>
           <ul class="nav navbar-nav navbar-right">
             <li><a href="#" id="version"></a></li>
-            <li>
-              <!-- AddThis Button BEGIN -->
-              <div class="addthis_toolbox addthis_default_style addthis_32x32_style">
-              <a class="addthis_button_twitter"></a>
-              <a class="addthis_button_facebook"></a>
-              <a class="addthis_button_reddit"></a>
-              <a class="addthis_button_google_plusone_share"></a>
-              <a class="addthis_button_compact"></a><a class="addthis_counter addthis_bubble_style"></a>
-              </div>
-              <script type="text/javascript" src="//s7.addthis.com/js/300/addthis_widget.js#pubid=ra-5364e5fa49d525cb"></script>
-              <!-- AddThis Button END -->
-            </li>
           </ul>
         </div><!--/.nav-collapse -->
       </div><!--/.container-fluid -->
@@ -529,6 +532,15 @@ $(document).ready (function () {
           <div class="col-md-5 col-xs-5"><%= hero_name %></div>
           <div class="col-md-3 col-xs-3">%<%= advantage %></div>
         </div>
+
+  </script>
+
+  <script type="text/template" id="about-page">
+
+    <div class="jumbotron">
+      <h2>DotaBuffCP v<%= version %></h2>
+      <p>Database last updated on <%= last_update %></p>
+    </div> 
 
   </script>
 
