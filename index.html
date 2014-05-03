@@ -87,7 +87,7 @@ var DotaBuffCP = {
         link += heroes[this.lineup[i]] + '/';
     }
 
-    link = link.replace (/ /, '_');
+    link = link.replace (/ /g, '_');
     link = link.replace (/\/+$/, '');
 
     return link;
@@ -258,7 +258,7 @@ var AppRouter = Backbone.Router.extend ({
     if (_.isNull (heroSelection))
       return;
 
-    heroSelection = heroSelection.replace (/_/, ' ');
+    heroSelection = heroSelection.replace (/_/g, ' ');
     var selectedHeroes = heroSelection.split ('/');
     console.log (selectedHeroes);
     
