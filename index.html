@@ -104,6 +104,7 @@ var DotaBuffCP = {
     var database_version = d.getFullYear () + month + '' + d.getDate ();
     console.log (database_version);
     $('#version').text (this.VERSION + '.' + database_version);
+    $('#version').click (function () { return false; });
 
   }
 
