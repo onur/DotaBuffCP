@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="en">
   <head>
     <meta charset="utf-8">
@@ -21,6 +21,112 @@
 
 // Fun part starts from here
 
+var heroAbbrLookup = {
+    "abaddon": ["avernus"],
+    "alchemist": ["razzil"],
+    "ancient apparition": ["kaldr", "aa"],
+    "anti-mage": ["am"],
+    "axe": [],
+    "bane": ["atropos"],
+    "batrider": [],
+    "beastmaster": ["karroch", "rexxar", "bm"],
+    "bloodseeker": ["strygwyr", "bs"],
+    "bounty hunter": ["gondar", "bh"],
+    "brewmaster": ["mangix", "bm"],
+    "bristleback": ["rigwarl", "bb"],
+    "broodmother": ["bm"],
+    "centaur warrunner": ["bradwarden", "cw"],
+    "chaos knight": ["ck"],
+    "chen": [],
+    "clinkz": ["bone"],
+    "clockwerk": ["rattletrap", "cw"],
+    "crystal maiden": ["rylai", "cm"],
+    "dark seer": ["ish", "ds"],
+    "dazzle": [],
+    "death prophet": ["krobelus", "grobulus", "dp"],
+    "disruptor": [],
+    "doom": [],
+    "dragon knight": ["davion", "dk"],
+    "drow ranger": ["traxex", "dr"],
+    "earthshaker": ["raigor", "es"],
+    "earth spirit": ["kaolin", "es"],
+    "elder titan": ["et"],
+    "ember spirit": ["xin", "es"],
+    "enchantress": ["aiushtha"],
+    "enigma": [],
+    "faceless void": ["darkterror"],
+    "gyrocopter": ["aurel"],
+    "huskar": [],
+    "invoker": ["kael", "karl", "carl"],
+    "io": ["wisp"],
+    "jakiro": ["thd"],
+    "juggernaut": ["yurnero"],
+    "keeper of the light": ["ezalor", "kotl"],
+    "kunkka": [],
+    "legion commander": ["tresdin", "lc"],
+    "leshrac": [],
+    "lich": ["ethreain"],
+    "lifestealer": ["naix"],
+    "lina": [],
+    "lion": [],
+    "lone druid": ["sylla", "ld"],
+    "luna": [],
+    "lycan": ["banehallow"],
+    "magnus": [],
+    "medusa": ["gorgon"],
+    "meepo": ["geomancer"],
+    "mirana": ["potm"],
+    "morphling": [],
+    "naga siren": ["slithice", "ns"],
+    "natures prophet": ["furion", "np"],
+    "necrophos": [],
+    "night stalker": ["ns", "balanar"],
+    "nyx assassin": ["na"],
+    "ogre magi": ["aggron", "om"],
+    "omniknight": ["ok"],
+    "outworld devourer": ["od", "harbinger"],
+    "phantom assassin": ["pa", "mortred"],
+    "phantom lancer": ["azwraith", "pl"],
+    "phoenix": [],
+    "puck": [],
+    "pudge": ["butcher"],
+    "pugna": [],
+    "queen of pain": ["akasha", "qop"],
+    "razor": [],
+    "riki": [],
+    "rubick": [],
+    "sand king": ["crixalis", "sk"],
+    "shadow demon": ["sd"],
+    "shadow fiend": ["nevermore", "sf"],
+    "shadow shaman": ["rhasta", "ss"],
+    "silencer": ["nortrom"],
+    "skywrath mage": ["dragonus", "sm"],
+    "slardar": [],
+    "sniper": ["kardel"],
+    "spectre": ["mercurial"],
+    "spirit breaker": ["barathrum", "sb"],
+    "storm spirit": ["raijin", "ss"],
+    "sven": [],
+    "templar assassin": ["lanaya", "ta"],
+    "terrorblade": ["tb"],
+    "tidehunter": ["leviathan"],
+    "timbersaw": ["rizzrack"],
+    "tinker": ["boush"],
+    "tiny": [],
+    "treant protector": ["rooftrellen"],
+    "troll warlord": ["tw"],
+    "tusk": ["ymir"],
+    "undying": ["dirge"],
+    "vengeful spirit": ["shendelzare", "vs"],
+    "venomancer": ["lesale"],
+    "visage": [],
+    "warlock": ["demnok", "wl"],
+    "weaver": ["skitskurr"],
+    "windranger": ["lyralei", "wr"],
+    "witch doctor": ["zharvakko", "wd"],
+    "wraith king": ["ostarion", "skeleton king", "wk", "sk"],
+    "zeus": []
+};
 
 var DotaBuffCP = {
 
@@ -42,13 +148,31 @@ var DotaBuffCP = {
     return -1;
 
   },
+  
+  checkHeroAbbr: function (hero, name) {
+
+    if (_.isUndefined(name)) {
+        return false;
+    }
+    
+    var abbrCheckResult = false;
+    
+    _.each (heroAbbrLookup[hero.toLowerCase ()], function(abbr) {
+        if (abbr.indexOf (name.toLowerCase ()) >= 0) {
+            abbrCheckResult = true;
+        }
+    });
+    
+    return abbrCheckResult;
+  },
 
   listHeroes: function (name) {
     $('#hero-list').html ('');
     _.each (heroes, function (hero, key) {
 
       if (!_.isUndefined (name) && 
-          hero.toLowerCase ().indexOf (name.toLowerCase ()) < 0) {
+          (!DotaBuffCP.checkHeroAbbr(hero, name)) && 
+          (hero.toLowerCase ().indexOf (name.toLowerCase ()) < 0)) {
         return;
       }
 
