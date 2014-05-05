@@ -14,7 +14,7 @@ use JSON;
 use POSIX qw/strftime/;
 
 
-my $DEBUG = 1;
+my $DEBUG = 0;
 my @heroes;
 my @heroes_bg;
 my @win_rates;
@@ -110,6 +110,8 @@ sub print_winrates {
   close $fh;
 }
 
+
+$_ eq '--debug' and $DEBUG++ for @ARGV;
 
 get_heroes ();
 get_winrates ();
