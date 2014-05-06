@@ -1,4 +1,4 @@
-dotabuffcp (0.2) UNRELEASED; urgency=low
+dotabuffcp (0.2) unstable; urgency=low
 
   * Fix typos.
   * Add hero search with abbreviations and alternative hero names.
@@ -6,7 +6,7 @@ dotabuffcp (0.2) UNRELEASED; urgency=low
   * Remove debug message.
   * Add ChangeLog to navbar.
 
- -- Onur Aslan <onuraslan@gmail.com>  Mon, 05 May 2014 22:19:59 +0300
+ -- Onur Aslan <onuraslan@gmail.com>  Tue, 06 May 2014 11:56:36 +0300
 
 dotabuffcp (0.1) unstable; urgency=low
 
