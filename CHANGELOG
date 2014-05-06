@@ -1,8 +1,10 @@
-dotabuffcp (0.2) UNRELEASED; urgency=medium
+dotabuffcp (0.2) UNRELEASED; urgency=low
 
   * Fix typos.
   * Add hero search with abbreviations and alternative hero names.
     Thanks to Lukas Pradel. (Closes: #1)
+  * Remove debug message.
+  * Add ChangeLog to navbar.
 
  -- Onur Aslan <onuraslan@gmail.com>  Mon, 05 May 2014 22:19:59 +0300
 
