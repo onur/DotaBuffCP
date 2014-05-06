@@ -1,6 +1,6 @@
 dotabuffcp (0.2.1) unstable; urgency=high
 
-  * Search is fixed.
+  * Search is fixed. (Closes: #2)
 
  -- Onur Aslan <onuraslan@gmail.com>  Tue, 06 May 2014 12:56:25 +0300
 
