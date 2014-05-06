@@ -21,7 +21,29 @@
 
 // Fun part starts from here
 
-var heroAbbrLookup = {
+
+var DotaBuffCP = {
+
+  VERSION: '0.1',
+
+  initialized: false,
+
+  initialize: function () {
+    this.lineup = [ -1, -1, -1, -1, -1 ];
+    this.initialized = true;
+  },
+
+  heroId: function (name) {
+
+    for (var i in heroes)
+      if (heroes[i].toLowerCase ().indexOf (name.toLowerCase ()) >= 0)
+        return i;
+
+    return -1;
+
+  },
+
+  heroAbbrLookup: {
     "abaddon": ["avernus"],
     "alchemist": ["razzil"],
     "ancient apparition": ["kaldr", "aa"],
@@ -126,44 +148,22 @@ var heroAbbrLookup = {
     "witch doctor": ["zharvakko", "wd"],
     "wraith king": ["ostarion", "skeleton king", "wk", "sk"],
     "zeus": []
-};
-
-var DotaBuffCP = {
-
-  VERSION: '0.1',
-
-  initialized: false,
-
-  initialize: function () {
-    this.lineup = [ -1, -1, -1, -1, -1 ];
-    this.initialized = true;
-  },
-
-  heroId: function (name) {
-
-    for (var i in heroes)
-      if (heroes[i].toLowerCase ().indexOf (name.toLowerCase ()) >= 0)
-        return i;
-
-    return -1;
-
   },
   
   checkHeroAbbr: function (hero, name) {
 
-    if (_.isUndefined(name)) {
-        return false;
-    }
+    var heroAbbr = this.heroAbbrLookup[hero.toLowerCase ()];
+
+    if (_.isUndefined (name) || _.isUndefined (heroAbbr))
+      return false;
+
+    name = name.toLowerCase ();
+
+    for (var i = 0; i < heroAbbr.length; ++i)
+      if (heroAbbr[i].indexOf (name) >= 0)
+        return true;
     
-    var abbrCheckResult = false;
-    
-    _.each (heroAbbrLookup[hero.toLowerCase ()], function(abbr) {
-        if (abbr.indexOf (name.toLowerCase ()) >= 0) {
-            abbrCheckResult = true;
-        }
-    });
-    
-    return abbrCheckResult;
+    return false;
   },
 
   listHeroes: function (name) {
@@ -171,8 +171,8 @@ var DotaBuffCP = {
     _.each (heroes, function (hero, key) {
 
       if (!_.isUndefined (name) && 
-          (!DotaBuffCP.checkHeroAbbr(hero, name)) && 
-          (hero.toLowerCase ().indexOf (name.toLowerCase ()) < 0)) {
+          !DotaBuffCP.checkHeroAbbr (hero, name) && 
+          hero.toLowerCase ().indexOf (name.toLowerCase () < 0)) {
         return;
       }
 
@@ -626,6 +626,7 @@ $(document).ready (function () {
           <ul class="nav navbar-nav">
             <li><a href="#about">About</a></li>
             <li><a href="https://github.com/onuraslan/DotaBuffCP">GitHub</a></li>
+            <li><a href="https://raw.githubusercontent.com/onuraslan/DotaBuffCP/gh-pages/CHANGELOG">ChangeLog</a></li>
           </ul>
           <ul class="nav navbar-nav navbar-right">
             <li><a href="#" id="version"></a></li>
