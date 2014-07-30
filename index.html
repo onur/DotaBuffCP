@@ -36,7 +36,8 @@ var DotaBuffCP = {
   heroId: function (name) {
 
     for (var i in heroes)
-      if (heroes[i].toLowerCase ().indexOf (name.toLowerCase ()) >= 0)
+      if (heroes[i].toLowerCase ().indexOf (name.toLowerCase ()) >= 0 
+        && heroes[i].length === name.length)
         return i;
 
     return -1;
