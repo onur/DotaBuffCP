@@ -2,6 +2,7 @@ dotabuffcp (0.3) unstable; urgency=high
 
   * Fixed bug with selecting io (Closes: #4)
   * Move changelog link to version string
+  * Remove version click binding
 
  -- Onur Aslan <onuraslan@gmail.com>  Thu, 31 Jul 2014 15:58:54 +0300
 
