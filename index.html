@@ -24,7 +24,7 @@
 
 var DotaBuffCP = {
 
-  VERSION: '0.2.1',
+  VERSION: '0.3',
 
   initialized: false,
 
@@ -36,7 +36,8 @@ var DotaBuffCP = {
   heroId: function (name) {
 
     for (var i in heroes)
-      if (heroes[i].toLowerCase ().indexOf (name.toLowerCase ()) >= 0)
+      if (heroes[i].toLowerCase ().indexOf (name.toLowerCase ()) >= 0 
+        && heroes[i].length === name.length)
         return i;
 
     return -1;
@@ -626,10 +627,9 @@ $(document).ready (function () {
           <ul class="nav navbar-nav">
             <li><a href="#about">About</a></li>
             <li><a href="https://github.com/onuraslan/DotaBuffCP">GitHub</a></li>
-            <li><a href="https://raw.githubusercontent.com/onuraslan/DotaBuffCP/gh-pages/CHANGELOG">ChangeLog</a></li>
           </ul>
           <ul class="nav navbar-nav navbar-right">
-            <li><a href="#" id="version"></a></li>
+            <li><a href="https://raw.githubusercontent.com/onuraslan/DotaBuffCP/gh-pages/CHANGELOG" id="version"></a></li>
           </ul>
         </div><!--/.nav-collapse -->
       </div><!--/.container-fluid -->
