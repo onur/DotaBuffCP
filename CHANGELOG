@@ -1,3 +1,10 @@
+dotabuffcp (0.3) unstable; urgency=high
+
+  * Fixed bug with selecting io (Closes: #4)
+  * Move changelog link to version string
+
+ -- Onur Aslan <onuraslan@gmail.com>  Thu, 31 Jul 2014 15:58:54 +0300
+
 dotabuffcp (0.2.1) unstable; urgency=high
 
   * Search is fixed. (Closes: #2)
