@@ -1,3 +1,9 @@
+dotabuffcp (0.3.1) unstable; urgency=high
+
+  * Use dotabuff.com prefix for image URLs
+
+ -- Onur Aslan <onuraslan@gmail.com>  Sat, 16 Aug 2014 10:58:11 +0300
+
 dotabuffcp (0.3) unstable; urgency=high
 
   * Fixed bug with selecting io (Closes: #4)
