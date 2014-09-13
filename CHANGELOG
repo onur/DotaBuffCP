@@ -1,3 +1,10 @@
+dotabuffcp (0.4) unstable; urgency=low
+
+  * Add techies to heroAbbrLookup. (Closes: #5)
+  * Fix updater script. (Closes: #6)
+
+ -- Onur Aslan <onuraslan@gmail.com>  Sat, 13 Sep 2014 11:48:50 +0300
+
 dotabuffcp (0.3.1) unstable; urgency=high
 
   * Use dotabuff.com prefix for image URLs
