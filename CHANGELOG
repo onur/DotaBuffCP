@@ -1,3 +1,14 @@
+dotabuffcp (0.5) unstable; urgency=low
+
+  * Remove apostrophe from hero name when generating hero link.
+  * Remove dotabuff.com prefix from hero images.
+  * Replace &#47; with / in hero background image links.
+  * Update regex to capture win rates.
+  * Update data.json for live version after a long break.
+    (Closes: #9, #11)
+
+ -- Onur Aslan <onur@onur.im>  Fri, 24 Apr 2015 17:47:29 +0300
+
 dotabuffcp (0.4) unstable; urgency=low
 
   * Add techies to heroAbbrLookup. (Closes: #5)
