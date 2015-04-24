@@ -29,6 +29,7 @@ sub read_data {
 
 sub hero_link {
   my $hero = $_[0];
+  $hero =~ s/'//g;
   $hero =~ s/ /-/g;
   $hero =~ tr/[A-Z]/[a-z]/;
   return $hero;
