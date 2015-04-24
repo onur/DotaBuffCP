@@ -55,7 +55,8 @@ sub get_heroes {
   my $content = get ('http://dotabuff.com/heroes') or die;
   (@heroes_bg) = $content =~ /background: url\((.*?)\)/g;
   (@heroes) = $content =~ /<div class="name">(.*?)<\/div>/g;
-  $_ =~ s/&.*?;// for (@heroes)
+  $_ =~ s/&.*?;// for (@heroes);
+  $_ =~ s/&#47;/\//g for (@heroes_bg);
 }
 
 
