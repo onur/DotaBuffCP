@@ -24,7 +24,7 @@
 
 var DotaBuffCP = {
 
-  VERSION: '0.4',
+  VERSION: '0.5',
 
   initialized: false,
 
@@ -180,7 +180,7 @@ var DotaBuffCP = {
 
       $('#hero-list').append (
         $('<li>').attr ('data-hero-id', key).html (
-          $('<img>').attr ('src', 'http://www.dotabuff.com/' + heroes_bg[key])
+          $('<img>').attr ('src', heroes_bg[key])
         ).append (hero)
       );
     });
@@ -320,7 +320,7 @@ var MainView = Backbone.View.extend ({
 
     DotaBuffCP.lineup[pick_i] = hid;
 
-    $('#hero-' + pick_i).html ($('<img>').attr ('src', 'http://www.dotabuff.com/' + heroes_bg[hid])
+    $('#hero-' + pick_i).html ($('<img>').attr ('src', heroes_bg[hid])
                                          .attr ('data-idx', pick_i));
 
     this.calculateAndShow ();
@@ -328,7 +328,7 @@ var MainView = Backbone.View.extend ({
   },
 
   addHeroToIndex: function (hid, pick_i) {
-    $('#hero-' + pick_i).html ($('<img>').attr ('src', 'http://www.dotabuff.com/' + heroes_bg[hid])
+    $('#hero-' + pick_i).html ($('<img>').attr ('src', heroes_bg[hid])
                                          .attr ('data-idx', pick_i));
   },
 
@@ -705,7 +705,7 @@ $(document).ready (function () {
           else if (advantage > 5) { %>warning<% }
           else if (advantage < 0) { %>danger<% }
         %>">
-          <td><img src="<%= 'http://www.dotabuff.com' + hero_bg %>"></td>
+          <td><img src="<%= hero_bg %>"></td>
           <td><%= hero_name %></td>
           <td><%= advantage %>%</td>
         </tr>

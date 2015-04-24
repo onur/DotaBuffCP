@@ -29,6 +29,7 @@ sub read_data {
 
 sub hero_link {
   my $hero = $_[0];
+  $hero =~ s/'//g;
   $hero =~ s/ /-/g;
   $hero =~ tr/[A-Z]/[a-z]/;
   return $hero;
@@ -54,7 +55,8 @@ sub get_heroes {
   my $content = get ('http://dotabuff.com/heroes') or die;
   (@heroes_bg) = $content =~ /background: url\((.*?)\)/g;
   (@heroes) = $content =~ /<div class="name">(.*?)<\/div>/g;
-  $_ =~ s/&.*?;// for (@heroes)
+  $_ =~ s/&.*?;// for (@heroes);
+  $_ =~ s/&#47;/\//g for (@heroes_bg);
 }
 
 
@@ -68,7 +70,8 @@ sub get_winrates_of_hero {
                      hero_link ($hero) .
                      '/matchups') or die;
 
-  my (@heros) = $content =~ /<a class="hero-link" href="\/heroes\/.*?">(.*?)<\/a><\/td><td>(.*?)%.*?<\/td><td><div>(.*?)%.*?<\/td><td><div>(.*?)<\/div>/g;
+  my $re = qr|<td class="cell-xlarge"><a href="/heroes/.*?">(.*?)</a></td><td>(.*?)%<div class="bar bar-default"><div class="segment segment-advantage" style="width: [\d.]+%"></div></div></td><td>(.*?)%<div class="bar bar-default"><div class="segment segment-win" style="width: [\d.]+%"></div></div></td><td>([\d,]+)<div class="bar bar-default"><div class="segment segment-match" style="width: [\d.]+%"></div></div></td></tr>|;
+  my (@heros) = $content =~ /$re/g;
 
   my $c = 0;
   my @a;
