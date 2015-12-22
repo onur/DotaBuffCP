@@ -1,3 +1,12 @@
+dotabuffcp (0.6.1) unstable; urgency=low
+
+  * Split javascript from html.
+  * Remove trailing whitespaces.
+  * Use ISO 8601 date format for update time.
+  * Update changelog url.
+
+ -- Onur Aslan <onur@onur.im>  Tue, 22 Dec 2015 14:08:53 +0200
+
 dotabuffcp (0.6) unstable; urgency=low
 
   * Update regex to capture win rates, thanks @aligo.
