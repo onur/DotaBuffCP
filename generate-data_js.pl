@@ -109,7 +109,7 @@ sub print_winrates {
   print $fh ', heroes_bg = ', $json->encode ([ @heroes_bg ]);
   print $fh ', win_rates = ', $json->encode ([ @win_rates ]);
   print $fh ', update_time = "',
-               strftime("%a, %d %b %Y %H:%M:%S %z", localtime (time ())),
+               strftime("%Y-%m-%d", localtime (time ())),
                "\";\n";
   close $fh;
 }
