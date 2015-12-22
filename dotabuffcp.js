@@ -210,16 +210,7 @@ var DotaBuffCP = {
 
   getVersion: function () {
 
-    var d = new Date (update_time);
-    var month = d.getMonth () + 1;
-    if (month < 10)
-      month = '0' + month;
-    var day = d.getDate ();
-    if (day < 10)
-      day = '0' + day;
-    var database_version = d.getFullYear () + month + '' + day;
-
-    return this.VERSION + '.' + database_version;
+    return this.VERSION + '.' + update_time;
 
   }
 
