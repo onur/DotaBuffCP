@@ -13,7 +13,7 @@ var DotaBuffCP = {
   heroId: function (name) {
 
     for (var i in heroes)
-      if (heroes[i].toLowerCase ().indexOf (name.toLowerCase ()) >= 0 
+      if (heroes[i].toLowerCase ().indexOf (name.toLowerCase ()) >= 0
         && heroes[i].length === name.length)
         return i;
 
@@ -128,7 +128,7 @@ var DotaBuffCP = {
     "wraith king": ["ostarion", "skeleton king", "wk", "sk"],
     "zeus": []
   },
-  
+
   checkHeroAbbr: function (hero, name) {
 
     var heroAbbr = this.heroAbbrLookup[hero.toLowerCase ()];
@@ -141,7 +141,7 @@ var DotaBuffCP = {
     for (var i = 0; i < heroAbbr.length; ++i)
       if (heroAbbr[i].indexOf (name) >= 0)
         return true;
-    
+
     return false;
   },
 
@@ -149,8 +149,8 @@ var DotaBuffCP = {
     $('#hero-list').html ('');
     _.each (heroes, function (hero, key) {
 
-      if (!_.isUndefined (name) && 
-          !DotaBuffCP.checkHeroAbbr (hero, name) && 
+      if (!_.isUndefined (name) &&
+          !DotaBuffCP.checkHeroAbbr (hero, name) &&
           hero.toLowerCase ().indexOf (name.toLowerCase ()) < 0) {
         return;
       }
@@ -256,7 +256,7 @@ var MainView = Backbone.View.extend ({
     else if (ev.keyCode == 13) {
       this.addFirstHero ();
     }
-    
+
     else {
       DotaBuffCP.listHeroes ($(ev.currentTarget).val ());
     }
@@ -414,7 +414,7 @@ var AppRouter = Backbone.Router.extend ({
 
     heroSelection = heroSelection.replace (/_/g, ' ');
     var selectedHeroes = heroSelection.split ('/');
-    
+
     for (var i in selectedHeroes) {
 
       if (i > 4)
