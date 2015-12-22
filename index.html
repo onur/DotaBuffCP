@@ -178,6 +178,10 @@ var DotaBuffCP = {
         return;
       }
 
+      if (!heroes_bg[key].match(/^http/)) {
+        heroes_bg[key] = 'http://www.dotabuff.com/' + heroes_bg[key];
+      }
+
       $('#hero-list').append (
         $('<li>').attr ('data-hero-id', key).html (
           $('<img>').attr ('src', heroes_bg[key])
