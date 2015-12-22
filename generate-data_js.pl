@@ -70,7 +70,8 @@ sub get_winrates_of_hero {
                      hero_link ($hero) .
                      '/matchups') or die;
 
-  my $re = qr|<td class="cell-xlarge"><a href="/heroes/.*?">(.*?)</a></td><td>(.*?)%<div class="bar bar-default"><div class="segment segment-advantage" style="width: [\d.]+%"></div></div></td><td>(.*?)%<div class="bar bar-default"><div class="segment segment-win" style="width: [\d.]+%"></div></div></td><td>([\d,]+)<div class="bar bar-default"><div class="segment segment-match" style="width: [\d.]+%"></div></div></td></tr>|;
+  my $re = qr|<td class="cell-xlarge"><a class="link-type-hero" href="/heroes/.*?">(.*?)</a></td><td data-value="(.*?)">.*?%<div class="bar bar-default"><div class="segment segment-advantage" style="width: [\d.]+%"></div></div></td><td data-value="(.*?)">.*?%<div class="bar bar-default"><div class="segment segment-win" style="width: [\d.]+%"></div></div></td><td data-value="\d+">([\d,]+)<div class="bar bar-default"><div class="segment segment-match" style="width: [\d.]+%"></div></div></td></tr>|;
+
   my (@heros) = $content =~ /$re/g;
 
   my $c = 0;

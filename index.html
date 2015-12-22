@@ -24,7 +24,7 @@
 
 var DotaBuffCP = {
 
-  VERSION: '0.5',
+  VERSION: '0.6',
 
   initialized: false,
 
@@ -176,6 +176,10 @@ var DotaBuffCP = {
           !DotaBuffCP.checkHeroAbbr (hero, name) && 
           hero.toLowerCase ().indexOf (name.toLowerCase ()) < 0) {
         return;
+      }
+
+      if (!heroes_bg[key].match(/^http/)) {
+        heroes_bg[key] = 'http://www.dotabuff.com/' + heroes_bg[key];
       }
 
       $('#hero-list').append (
