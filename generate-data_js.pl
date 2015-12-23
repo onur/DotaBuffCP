@@ -17,6 +17,7 @@ use POSIX qw/strftime/;
 my $DEBUG = 0;
 my @heroes;
 my @heroes_bg;
+my @heroes_wr;
 my @win_rates;
 
 
@@ -69,6 +70,9 @@ sub get_winrates_of_hero {
   my $content = get ('http://dotabuff.com/heroes/' .
                      hero_link ($hero) .
                      '/matchups') or die;
+  
+  my (@wr) = $content =~ /<dl><dd><span class="(?:won|lost)">(.*?)%<\/span><\/dd><dt>Win Rate<\/dt><\/dl>/g;
+  $heroes_wr[$hid] = $wr[0];
 
   my $re = qr|<td class="cell-xlarge"><a class="link-type-hero" href="/heroes/.*?">(.*?)</a></td><td data-value="(.*?)">.*?%<div class="bar bar-default"><div class="segment segment-advantage" style="width: [\d.]+%"></div></div></td><td data-value="(.*?)">.*?%<div class="bar bar-default"><div class="segment segment-win" style="width: [\d.]+%"></div></div></td><td data-value="\d+">([\d,]+)<div class="bar bar-default"><div class="segment segment-match" style="width: [\d.]+%"></div></div></td></tr>|;
 
@@ -107,6 +111,7 @@ sub print_winrates {
 
   print $fh 'var heroes = ', $json->encode ([ @heroes ]);
   print $fh ', heroes_bg = ', $json->encode ([ @heroes_bg ]);
+  print $fh ', heroes_wr = ', $json->encode ([ @heroes_wr ]);
   print $fh ', win_rates = ', $json->encode ([ @win_rates ]);
   print $fh ', update_time = "',
                strftime("%Y-%m-%d", localtime (time ())),
