@@ -342,6 +342,7 @@ var MainView = Backbone.View.extend ({
       $('#' + div).append (_.template (template, {
                                      hero_bg: heroes_bg[advantage[1]],
                                      hero_name: heroes[advantage[1]],
+                                     win_rate: heroes_wr[advantage[1]],
                                      advantage: advantage[0].toFixed (2) * -1
                                                  }));
     });
