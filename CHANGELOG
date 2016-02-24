@@ -1,3 +1,11 @@
+dotabuffcp (0.7.1) unstable; urgency=low
+
+  * Update regex to capture win rates.
+  * Update get_heroes to fix name of Nature's Prophet.
+  * Update github links.
+
+ -- Onur Aslan <onur@onur.im>  Wed, 24 Feb 2016 11:11:41 +0200
+
 dotabuffcp (0.7.0) unstable; urgency=low
 
   * Show win rate of heroes, thanks @aligo.
