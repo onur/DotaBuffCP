@@ -70,7 +70,7 @@ sub get_winrates_of_hero {
 
   my $content = get ('http://dotabuff.com/heroes/' .
                      hero_link ($hero) .
-                     '/matchups') or die;
+                     '/counters') or die;
   
   my (@wr) = $content =~ /<dl><dd><span class="(?:won|lost)">(.*?)%<\/span><\/dd><dt>Win Rate<\/dt><\/dl>/g;
   $heroes_wr[$hid] = $wr[0];

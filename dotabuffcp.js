@@ -76,6 +76,7 @@ var DotaBuffCP = {
     "medusa": ["gorgon"],
     "meepo": ["geomancer"],
     "mirana": ["potm"],
+    "monkey king": ["mk"],
     "morphling": [],
     "naga siren": ["slithice", "ns"],
     "natures prophet": ["furion", "np"],
